@@ -125,15 +125,17 @@ class AppWindow(QMainWindow):
 
     def check_win(self):
         start = time.time_ns()
+        winner = ""
 
         for i in range(len(self.buttons)):
             for j in range(len(self.buttons[i])):
                 if self.buttons[i][j].text() == "X":
-                    self.check_directions_win(i, j, "X")
+                    winner = self.check_directions_win(i, j, "X")
                 elif self.buttons[i][j].text() == "O":
-                    self.check_directions_win(i, j, "O")
+                    winner = self.check_directions_win(i, j, "O")
 
         print(f"Duration : {time.time_ns() - start}ns")
+        print(winner)
 
     def check_directions_win(self, row, column, letter):
 
@@ -146,7 +148,7 @@ class AppWindow(QMainWindow):
                 if row < self.in_a_row - 1:
                     direction = 2
                     continue
-                if self.validate_win(direction, letter, row, column): print(f"{letter} won")
+                if self.validate_win(direction, letter, row, column): return letter
                 else: direction += 1
             elif direction == 1: # NE
                 # Checking the top of Y axis
@@ -157,14 +159,14 @@ class AppWindow(QMainWindow):
                 if column > self.grid_size - self.in_a_row:
                     direction = 4
                     continue
-                if self.validate_win(direction, letter, row, column): print(f"{letter} won")
+                if self.validate_win(direction, letter, row, column): return letter
                 else: direction += 1
             elif direction == 2: # E
                 # Checking the right side of X axis
                 if column > self.grid_size - self.in_a_row:
                     direction = 4
                     continue
-                if self.validate_win(direction, letter, row, column): print(f"{letter} won")
+                if self.validate_win(direction, letter, row, column): return letter
                 else: direction += 1
             elif direction == 3: # SE
                 # Checking the right side of X axis
@@ -175,14 +177,14 @@ class AppWindow(QMainWindow):
                 if row > self.grid_size - self.in_a_row:
                     direction = 6
                     continue
-                if self.validate_win(direction, letter, row, column): print(f"{letter} won")
+                if self.validate_win(direction, letter, row, column): return letter
                 else: direction += 1
             elif direction == 4: # S
                 # Checking the bottom of Y axis
                 if row > self.grid_size - self.in_a_row:
                     direction = 6
                     continue
-                if self.validate_win(direction, letter, row, column): print(f"{letter} won")
+                if self.validate_win(direction, letter, row, column): return letter
                 else: direction += 1
             elif direction == 5: # SW
                 # Checking the bottom of Y axis
@@ -193,24 +195,26 @@ class AppWindow(QMainWindow):
                 if column < self.in_a_row - 1:
                     direction = 8
                     continue
-                if self.validate_win(direction, letter, row, column): print(f"{letter} won")
+                if self.validate_win(direction, letter, row, column): return letter
                 else: direction += 1
             elif direction == 6: # W
                 # Checking the left side of X axis
                 if column < self.in_a_row - 1:
                     direction = 8
                     continue
-                if self.validate_win(direction, letter, row, column): print(f"{letter} won")
+                if self.validate_win(direction, letter, row, column): return letter
                 else: direction += 1
             elif direction == 7: # NW
                 # Checking the left side of X axis
                 if column < self.in_a_row - 1:
                     direction = 8
                     continue
-                if self.validate_win(direction, letter, row, column): print(f"{letter} won")
+                if self.validate_win(direction, letter, row, column): return letter
                 else: direction += 1
 
-        print("EOF")
+        return "N"
 
     def validate_win(self, direction, letter, row, column):
-        pass
+
+        if self.count == self.in_a_row: return True
+        else: return False
