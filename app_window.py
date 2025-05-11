@@ -126,7 +126,6 @@ class AppWindow(QMainWindow):
             print(f"The winner is : {winner}")
 
     def check_win(self):
-        start = time.time_ns()
         winner = ""
 
         for i in range(len(self.buttons)):
@@ -138,7 +137,6 @@ class AppWindow(QMainWindow):
                     winner = self.check_directions_win(i, j, "O")
                     if winner != "N": return "O"
 
-        print(f"Duration : {time.time_ns() - start}ns")
         return "N"
 
     def check_directions_win(self, row, column, letter):
@@ -281,7 +279,7 @@ class AppWindow(QMainWindow):
                 i -= 1
                 j -= 1
 
-        # If there is the desired amount in a row
+        # If there is the desired amount in a row, color the tiles
         if self.count == self.in_a_row:
             if direction == 0:
                 i = row
@@ -359,5 +357,9 @@ class AppWindow(QMainWindow):
                         self.buttons[i][j].setStyleSheet("background-color: blue;")
                     i -= 1
                     j -= 1
+            # Disable the buttons
+            for i in range(0, len(self.buttons)):
+                for j in range(0, len(self.buttons[i])):
+                    self.buttons[i][j].setEnabled(False)
             return True
         else: return False
