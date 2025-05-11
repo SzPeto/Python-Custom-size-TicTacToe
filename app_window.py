@@ -14,7 +14,7 @@ class AppWindow(QMainWindow):
         # Master
         self.grid_size = self.set_grid_size()
         self.button_size = 40
-        self.in_a_row = 7
+        self.in_a_row = 5
         self.active_player_1 = True
         self.player_1_name = "Player 1"
         self.player_2_name = "Player 2"
