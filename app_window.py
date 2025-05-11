@@ -14,7 +14,7 @@ class AppWindow(QMainWindow):
         # Master
         self.grid_size = self.set_grid_size()
         self.button_size = 40
-        self.in_a_row = 5
+        self.in_a_row = 7
         self.active_player_1 = True
         self.player_1_name = "Player 1"
         self.player_2_name = "Player 2"
@@ -121,7 +121,9 @@ class AppWindow(QMainWindow):
             self.player_1_label.setText(f"🟡{self.player_1_name}")
             self.player_2_label.setText(f"    {self.player_2_name}")
 
-        self.check_win()
+        winner = self.check_win()
+        if winner != "N":
+            print(f"The winner is : {winner}")
 
     def check_win(self):
         start = time.time_ns()
@@ -131,11 +133,13 @@ class AppWindow(QMainWindow):
             for j in range(len(self.buttons[i])):
                 if self.buttons[i][j].text() == "X":
                     winner = self.check_directions_win(i, j, "X")
+                    if winner != "N": return "X"
                 elif self.buttons[i][j].text() == "O":
                     winner = self.check_directions_win(i, j, "O")
+                    if winner != "N": return "O"
 
         print(f"Duration : {time.time_ns() - start}ns")
-        print(winner)
+        return "N"
 
     def check_directions_win(self, row, column, letter):
 
@@ -216,5 +220,144 @@ class AppWindow(QMainWindow):
 
     def validate_win(self, direction, letter, row, column):
 
-        if self.count == self.in_a_row: return True
+        if direction == 0:
+            i = row
+            j = column
+            for k in range(0, self.in_a_row):
+                if self.buttons[i][j].text() == letter:
+                    self.count += 1
+                i -= 1
+        elif direction == 1:
+            i = row
+            j = column
+            for k in range(0, self.in_a_row):
+                if self.buttons[i][j].text() == letter:
+                    self.count += 1
+                i -= 1
+                j += 1
+        elif direction == 2:
+            i = row
+            j = column
+            for k in range(0, self.in_a_row):
+                if self.buttons[i][j].text() == letter:
+                    self.count += 1
+                j += 1
+        elif direction == 3:
+            i = row
+            j = column
+            for k in range(0, self.in_a_row):
+                if self.buttons[i][j].text() == letter:
+                    self.count += 1
+                i += 1
+                j += 1
+        elif direction == 4:
+            i = row
+            j = column
+            for k in range(0, self.in_a_row):
+                if self.buttons[i][j].text() == letter:
+                    self.count += 1
+                i += 1
+        elif direction == 5:
+            i = row
+            j = column
+            for k in range(0, self.in_a_row):
+                if self.buttons[i][j].text() == letter:
+                    self.count += 1
+                i += 1
+                j -= 1
+        elif direction == 6:
+            i = row
+            j = column
+            for k in range(0, self.in_a_row):
+                if self.buttons[i][j].text() == letter:
+                    self.count += 1
+                j -= 1
+        elif direction == 7:
+            i = row
+            j = column
+            for k in range(0, self.in_a_row):
+                if self.buttons[i][j].text() == letter:
+                    self.count += 1
+                i -= 1
+                j -= 1
+
+        # If there is the desired amount in a row
+        if self.count == self.in_a_row:
+            if direction == 0:
+                i = row
+                j = column
+                for k in range(0, self.in_a_row):
+                    if letter == "X":
+                        self.buttons[i][j].setStyleSheet("background-color: red;")
+                    elif letter == "O":
+                        self.buttons[i][j].setStyleSheet("background-color: blue;")
+                    i -= 1
+            elif direction == 1:
+                i = row
+                j = column
+                for k in range(0, self.in_a_row):
+                    if letter == "X":
+                        self.buttons[i][j].setStyleSheet("background-color: red;")
+                    elif letter == "O":
+                        self.buttons[i][j].setStyleSheet("background-color: blue;")
+                    i -= 1
+                    j += 1
+            elif direction == 2:
+                i = row
+                j = column
+                for k in range(0, self.in_a_row):
+                    if letter == "X":
+                        self.buttons[i][j].setStyleSheet("background-color: red;")
+                    elif letter == "O":
+                        self.buttons[i][j].setStyleSheet("background-color: blue;")
+                    j += 1
+            elif direction == 3:
+                i = row
+                j = column
+                for k in range(0, self.in_a_row):
+                    if letter == "X":
+                        self.buttons[i][j].setStyleSheet("background-color: red;")
+                    elif letter == "O":
+                        self.buttons[i][j].setStyleSheet("background-color: blue;")
+                    i += 1
+                    j += 1
+            elif direction == 4:
+                i = row
+                j = column
+                for k in range(0, self.in_a_row):
+                    if letter == "X":
+                        self.buttons[i][j].setStyleSheet("background-color: red;")
+                    elif letter == "O":
+                        self.buttons[i][j].setStyleSheet("background-color: blue;")
+                    i += 1
+            elif direction == 5:
+                i = row
+                j = column
+                for k in range(0, self.in_a_row):
+                    if letter == "X":
+                        self.buttons[i][j].setStyleSheet("background-color: red;")
+                    elif letter == "O":
+                        self.buttons[i][j].setStyleSheet("background-color: blue;")
+                    i += 1
+                    j -= 1
+            elif direction == 6:
+                i = row
+                j = column
+                for k in range(0, self.in_a_row):
+                    if letter == "X":
+                        self.buttons[i][j].setStyleSheet("background-color: red;")
+                    elif letter == "O":
+                        self.buttons[i][j].setStyleSheet("background-color: blue;")
+                    j -= 1
+            elif direction == 7:
+                i = row
+                j = column
+                for k in range(0, self.in_a_row):
+                    if letter == "X":
+                        self.buttons[i][j].setStyleSheet("background-color: red;")
+                    elif letter == "O":
+                        self.buttons[i][j].setStyleSheet("background-color: blue;")
+                    i -= 1
+                    j -= 1
+            return True
         else: return False
