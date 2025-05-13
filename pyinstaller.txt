@@ -1,1 +1,1 @@
-pyinstaller --noconsole --add-data "Fonts;Fonts" --onefile Main.py
+pyinstaller --noconsole --add-data "tic_tac_toe.png;." --onefile Main.py

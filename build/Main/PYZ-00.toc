@@ -346,6 +346,10 @@
   ('urllib.parse',
    'C:\\Users\\szjan\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\urllib\\parse.py',
    'PYMODULE'),
+  ('welcome_window',
+   'C:\\Users\\szjan\\PycharmProjects\\Other\\Other - 12 - Custom size '
+   'TicTacToe\\welcome_window.py',
+   'PYMODULE'),
   ('zipfile',
    'C:\\Users\\szjan\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\zipfile\\__init__.py',
    'PYMODULE'),

@@ -29,7 +29,7 @@ class WelcomeWindow(QWidget):
         self.name_2_text_field = QLineEdit()
         self.title_label = QLabel("Custom size TicTacToe\n by Peter Szepesi")
         self.grid_size_label = QLabel("Grid size : ")
-        self.on_a_row_label = QLabel("In a row : ")
+        self.in_a_row_label = QLabel("In a row : ")
         self.grid_size_combo = QComboBox()
         self.in_a_row_combo = QComboBox()
         self.start_button = QPushButton("Start")
@@ -43,7 +43,7 @@ class WelcomeWindow(QWidget):
         self.h_box_player_name.addWidget(self.name_2_text_field)
         self.h_box_options_1.addWidget(self.grid_size_label)
         self.h_box_options_1.addWidget(self.grid_size_combo)
-        self.h_box_options_2.addWidget(self.on_a_row_label)
+        self.h_box_options_2.addWidget(self.in_a_row_label)
         self.h_box_options_2.addWidget(self.in_a_row_combo)
         self.v_box_main.addWidget(self.title_label, alignment = Qt.AlignCenter | Qt.AlignTop)
         self.v_box_main.addLayout(self.h_box_player_name)
@@ -59,6 +59,7 @@ class WelcomeWindow(QWidget):
         self.start_button.clicked.connect(self.start)
 
         # Labels, buttons and other
+        self.setWindowIcon(self.app_window.icon)
         self.title_label.setObjectName("titleLabel")
         self.setWindowTitle("Welcome to custom size TicTacToe")
         self.name_1_text_field.setPlaceholderText("Player 1 name : ")
@@ -80,7 +81,7 @@ class WelcomeWindow(QWidget):
             }
             
             QComboBox{
-                font-size: 15px;
+                font-size: 18px;
             }
             
             QPushButton{
@@ -94,7 +95,7 @@ class WelcomeWindow(QWidget):
             }
             
             WelcomeWindow{
-                background-color: rgb(220, 220, 255);
+                background-color: rgb(230, 230, 255);
             }
         """)
 

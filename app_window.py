@@ -1,10 +1,9 @@
 import os
 import sys
-import time
 from typing import List
 
-from PyQt5.QtCore import Qt, QTimer
-from PyQt5.QtGui import QGuiApplication, QFontDatabase, QFont
+from PyQt5.QtCore import Qt
+from PyQt5.QtGui import QGuiApplication, QIcon
 from PyQt5.QtWidgets import QMainWindow, QWidget, QGridLayout, QPushButton, QHBoxLayout, QVBoxLayout, QLabel
 
 from welcome_window import WelcomeWindow
@@ -41,10 +40,7 @@ class AppWindow(QMainWindow):
         self.player_1_label = QLabel(f"🟡{self.player_1_name}")
         self.player_2_label = QLabel(f"    {self.player_2_name}")
         self.game_info_label = QLabel(f"{self.in_a_row} in a row")
-        self.bahnschrift_font = QFontDatabase.addApplicationFont(self.resource_path("Fonts\\bahnschrift.ttf"))
-        self.bahnschrift_font_family = QFontDatabase.applicationFontFamilies(self.bahnschrift_font)[0]
-        self.seguiemj_font = QFontDatabase.addApplicationFont(self.resource_path("Fonts\\seguiemj.ttf"))
-        self.seguiemj_font_family = QFontDatabase.applicationFontFamilies(self.seguiemj_font)[0]
+        self.icon = QIcon(self.resource_path("tic_tac_toe.png"))
 
         # Initializing UI
         self.initUI()
@@ -71,16 +67,15 @@ class AppWindow(QMainWindow):
         self.center_window()
 
         # Labels, buttons and other
-        self.player_1_label.setFont(QFont(self.bahnschrift_font_family, 20))
-        self.player_2_label.setFont(QFont(self.bahnschrift_font_family, 20))
-        self.game_info_label.setFont(QFont(self.bahnschrift_font_family, 20))
+        self.setWindowIcon(self.icon)
         self.player_1_label.setObjectName("player1Label")
         self.player_2_label.setObjectName("player2Label")
         self.setWindowTitle("Custom size TicTacToe by Peter Szepesi")
         #self.create_buttons()
         self.setStyleSheet("""
             QLabel{
-                
+                font-family: Bahnschrift;
+                font-size: 30px;
             }
 
             QLabel#player1Label{
@@ -89,6 +84,10 @@ class AppWindow(QMainWindow):
 
             QLabel#player2Label{
                 color: blue;
+            }
+            
+            AppWindow{
+                background-color: rgb(230, 230, 255);
             }
             
         """)
