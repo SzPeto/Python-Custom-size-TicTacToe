@@ -1,1 +1,1 @@
-pyinstaller --noconsole --onefile Main.py
+pyinstaller --noconsole --add-data "Fonts;Fonts" --onefile Main.py

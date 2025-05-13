@@ -1,9 +1,13 @@
+import os
+import sys
 import time
 from typing import List
 
 from PyQt5.QtCore import Qt, QTimer
-from PyQt5.QtGui import QGuiApplication
+from PyQt5.QtGui import QGuiApplication, QFontDatabase, QFont
 from PyQt5.QtWidgets import QMainWindow, QWidget, QGridLayout, QPushButton, QHBoxLayout, QVBoxLayout, QLabel
+
+from welcome_window import WelcomeWindow
 
 
 class AppWindow(QMainWindow):
@@ -27,15 +31,20 @@ class AppWindow(QMainWindow):
 
         # Layout
         self.central_widget = QWidget()
-        self.v_box = QVBoxLayout()
-        self.grid = QGridLayout()
         self.h_box_info = QHBoxLayout()
+        self.grid_h_box = QHBoxLayout()
+        self.v_box = QVBoxLayout()
+        self.grid_layout = QGridLayout()
 
         # Buttons, labels and other
         self.buttons: List[List[QPushButton]] = []
         self.player_1_label = QLabel(f"🟡{self.player_1_name}")
         self.player_2_label = QLabel(f"    {self.player_2_name}")
         self.game_info_label = QLabel(f"{self.in_a_row} in a row")
+        self.bahnschrift_font = QFontDatabase.addApplicationFont(self.resource_path("Fonts\\bahnschrift.ttf"))
+        self.bahnschrift_font_family = QFontDatabase.applicationFontFamilies(self.bahnschrift_font)[0]
+        self.seguiemj_font = QFontDatabase.addApplicationFont(self.resource_path("Fonts\\seguiemj.ttf"))
+        self.seguiemj_font_family = QFontDatabase.applicationFontFamilies(self.seguiemj_font)[0]
 
         # Initializing UI
         self.initUI()
@@ -44,28 +53,34 @@ class AppWindow(QMainWindow):
 
         # Layout
         self.setCentralWidget(self.central_widget)
+        self.grid_h_box.addStretch() # This adds a stretch to the left side of the grid
+        self.grid_h_box.addLayout(self.grid_layout) # The grid between two stretches
+        self.grid_h_box.addStretch() # This adds a stretch to the right side of the grid
         self.h_box_info.addWidget(self.player_1_label, alignment=Qt.AlignCenter)
         self.h_box_info.addWidget(self.game_info_label, alignment=Qt.AlignCenter)
         self.h_box_info.addWidget(self.player_2_label, alignment=Qt.AlignCenter)
         self.v_box.addLayout(self.h_box_info)
-        self.v_box.addLayout(self.grid)
+        self.v_box.addLayout(self.grid_h_box)
         self.central_widget.setLayout(self.v_box)
 
         # Geometry
-        self.grid.setSpacing(0)
-        self.grid.setContentsMargins(0, 0, 0, 0)
+        self.grid_layout.setSpacing(0)
+        self.grid_layout.setContentsMargins(0, 0, 0, 0)
+        self.v_box.setSpacing(0)
         self.v_box.setContentsMargins(0, 0, 0, 0)
         self.center_window()
 
         # Labels, buttons and other
+        self.player_1_label.setFont(QFont(self.bahnschrift_font_family, 20))
+        self.player_2_label.setFont(QFont(self.bahnschrift_font_family, 20))
+        self.game_info_label.setFont(QFont(self.bahnschrift_font_family, 20))
         self.player_1_label.setObjectName("player1Label")
         self.player_2_label.setObjectName("player2Label")
         self.setWindowTitle("Custom size TicTacToe by Peter Szepesi")
-        self.create_buttons()
+        #self.create_buttons()
         self.setStyleSheet("""
             QLabel{
-                font-family: Bahnschrift;
-                font-size: 30px;
+                
             }
 
             QLabel#player1Label{
@@ -79,7 +94,6 @@ class AppWindow(QMainWindow):
         """)
 
     def center_window(self):
-        self.setFixedWidth(self.window_width)
         monitor_width = self.monitor.width()
         monitor_height = self.monitor.height()
         window_x = int((monitor_width - self.window_width) / 2)
@@ -98,7 +112,7 @@ class AppWindow(QMainWindow):
 
         for i in range(len(self.buttons)):
             for j in range(len(self.buttons[i])):
-                self.grid.addWidget(self.buttons[i][j], i, j)
+                self.grid_layout.addWidget(self.buttons[i][j], i, j)
 
     def set_grid_size(self):
         return int(15)
@@ -363,3 +377,9 @@ class AppWindow(QMainWindow):
                     self.buttons[i][j].setEnabled(False)
             return True
         else: return False
+
+    def resource_path(self, relative_path):
+        if hasattr(sys, "_MEIPASS"):
+            return os.path.join(sys._MEIPASS, relative_path) # In case of exe return the absolute path
+        else:
+            return os.path.join(os.path.abspath("."), relative_path) # In case of IDE return the relative path
