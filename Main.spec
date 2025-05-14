@@ -5,7 +5,7 @@ a = Analysis(
     ['Main.py'],
     pathex=[],
     binaries=[],
-    datas=[('Fonts', 'Fonts')],
+    datas=[('tic_tac_toe.png', '.')],
     hiddenimports=[],
     hookspath=[],
     hooksconfig={},

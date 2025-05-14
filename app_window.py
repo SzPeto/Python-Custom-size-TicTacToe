@@ -4,10 +4,8 @@ from typing import List
 
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QGuiApplication, QIcon
-from PyQt5.QtWidgets import QMainWindow, QWidget, QGridLayout, QPushButton, QHBoxLayout, QVBoxLayout, QLabel
-
-from welcome_window import WelcomeWindow
-
+from PyQt5.QtWidgets import QMainWindow, QWidget, QGridLayout, QPushButton, QHBoxLayout, QVBoxLayout, QLabel, QMenu, \
+    QMenuBar, QAction
 
 class AppWindow(QMainWindow):
 
@@ -22,6 +20,16 @@ class AppWindow(QMainWindow):
         self.player_1_name = "Player 1"
         self.player_2_name = "Player 2"
         self.count = 0
+
+        # Menu
+        self.menu_bar = QMenuBar()
+        self.file_menu = QMenu("File")
+        self.about_menu = QMenu("About")
+        self.exit_action = QAction("Exit")
+        self.help_action = QAction("Help")
+        self.about_action = QAction("About")
+        self.restart_action = QAction("Restart")
+        self.new_game_action = QAction("New game")
 
         # Geometry
         self.window_width = int(self.grid_size * self.button_size)
@@ -58,6 +66,21 @@ class AppWindow(QMainWindow):
         self.v_box.addLayout(self.h_box_info)
         self.v_box.addLayout(self.grid_h_box)
         self.central_widget.setLayout(self.v_box)
+
+        # Menu
+        self.setMenuBar(self.menu_bar)
+        self.menu_bar.addMenu(self.file_menu)
+        self.menu_bar.addMenu(self.about_menu)
+        self.file_menu.addAction(self.new_game_action)
+        self.file_menu.addAction(self.restart_action)
+        self.file_menu.addAction(self.exit_action)
+        self.about_menu.addAction(self.help_action)
+        self.about_menu.addAction(self.about_action)
+        self.exit_action.triggered.connect(self.exit)
+        self.restart_action.triggered.connect(self.restart)
+        self.new_game_action.triggered.connect(self.new_game)
+        self.help_action.triggered.connect(self.open_help)
+        self.about_action.triggered.connect(self.open_about)
 
         # Geometry
         self.grid_layout.setSpacing(0)
@@ -382,3 +405,19 @@ class AppWindow(QMainWindow):
             return os.path.join(sys._MEIPASS, relative_path) # In case of exe return the absolute path
         else:
             return os.path.join(os.path.abspath("."), relative_path) # In case of IDE return the relative path
+
+    # Menu related functions
+    def exit(self):
+        sys.exit(0)
+
+    def restart(self):
+        print("Restarting")
+
+    def new_game(self):
+        print("New game")
+
+    def open_help(self):
+        print("Opening help")
+
+    def open_about(self):
+        print("Opening about")
