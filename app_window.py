@@ -1,4 +1,6 @@
 import os
+import platform
+import subprocess
 import sys
 from typing import List
 
@@ -462,8 +464,45 @@ class AppWindow(QMainWindow):
         self.buttons: List[List[QPushButton]] = []
         self.Main.welcome_w.show()
 
+    # File opening methods ***********************************************************************************
     def open_help(self):
-        print("Opening help")
+        help_file_path = "Help.txt"
+
+        try:
+            if platform.system() == "Windows":
+                os.startfile(help_file_path)
+            elif platform.system() == "Darwin":
+                subprocess.call(["open", help_file_path])
+            else:
+                subprocess.call(["xdg-open", help_file_path])
+
+            with open(help_file_path, "r") as file:
+                content = file.read()
+                print(content)
+        except FileNotFoundError:
+            print("File not found")
+        except PermissionError:
+            print("You don't have permission to open this file")
+        except Exception as e:
+            print(f"Something went wrong, error message : {e}")
 
     def open_about(self):
-        print("Opening about")
+        about_file_path = "About.txt"
+
+        try:
+            if platform.system() == "Windows":
+                os.startfile(about_file_path)
+            elif platform.system() == "Darwin":
+                subprocess.call(["open", about_file_path])
+            else:
+                subprocess.call(["xdg-open", about_file_path])
+
+            with open(about_file_path, "r") as file:
+                content = file.read()
+                print(content)
+        except FileNotFoundError:
+            print("File not found")
+        except PermissionError:
+            print("You don't have permission to open this file")
+        except Exception as e:
+            print(f"Something went wrong, error message : {e}")

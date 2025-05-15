@@ -1,1 +1,1 @@
-pyinstaller --noconsole --add-data "tic_tac_toe.png;." --add-data "background - welcome_window.jpg;." --onefile Main.py
+pyinstaller --noconsole --add-data "tic_tac_toe.png;." --add-data "background - welcome_window.jpg;." --add-data "Help.txt;." --add-data "About.txt;." --onefile Main.py

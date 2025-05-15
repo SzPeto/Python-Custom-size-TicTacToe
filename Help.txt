@@ -1,0 +1,3 @@
+In a row means how many consecutive tiles you have to have either vertically, horizontally or diagonally in order
+to win.
+Grid size sets how many tiles you would like to have vertically and horizontally
