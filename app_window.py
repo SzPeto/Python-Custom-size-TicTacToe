@@ -5,14 +5,16 @@ from typing import List
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QGuiApplication, QIcon
 from PyQt5.QtWidgets import QMainWindow, QWidget, QGridLayout, QPushButton, QHBoxLayout, QVBoxLayout, QLabel, QMenu, \
-    QMenuBar, QAction
+    QMenuBar, QAction, QStyleFactory
+
 
 class AppWindow(QMainWindow):
 
-    def __init__(self):
+    def __init__(self, Main):
         super().__init__()
 
         # Master
+        self.Main = Main
         self.grid_size = self.set_grid_size()
         self.button_size = 40
         self.in_a_row = 5
@@ -40,14 +42,17 @@ class AppWindow(QMainWindow):
         self.central_widget = QWidget()
         self.h_box_info = QHBoxLayout()
         self.h_box_grid = QHBoxLayout()
+        self.h_box_status = QHBoxLayout()
         self.v_box = QVBoxLayout()
         self.grid_layout = QGridLayout()
 
         # Buttons, labels and other
         self.buttons: List[List[QPushButton]] = []
+        self.restart_button = QPushButton("Restart")
         self.player_1_label = QLabel(f"🟡{self.player_1_name}")
         self.player_2_label = QLabel(f"    {self.player_2_name}")
         self.game_info_label = QLabel(f"{self.in_a_row} in a row")
+        self.status_label = QLabel("")
         self.icon = QIcon(self.resource_path("tic_tac_toe.png"))
 
         # Initializing UI
@@ -63,8 +68,10 @@ class AppWindow(QMainWindow):
         self.h_box_info.addWidget(self.player_1_label, alignment=Qt.AlignCenter)
         self.h_box_info.addWidget(self.game_info_label, alignment=Qt.AlignCenter)
         self.h_box_info.addWidget(self.player_2_label, alignment=Qt.AlignCenter)
+        self.h_box_status.addWidget(self.status_label, alignment = Qt.AlignCenter)
         self.v_box.addLayout(self.h_box_info)
         self.v_box.addLayout(self.h_box_grid)
+        self.v_box.addLayout(self.h_box_status)
         self.central_widget.setLayout(self.v_box)
 
         # Menu
@@ -91,9 +98,12 @@ class AppWindow(QMainWindow):
 
         # Labels, buttons and other
         self.setWindowIcon(self.icon)
+        self.restart_button.setObjectName("restartButton")
+        self.restart_button.setStyle(QStyleFactory.create("Fusion"))
         self.player_1_label.setObjectName("player1Label")
         self.player_2_label.setObjectName("player2Label")
         self.setWindowTitle("Custom size TicTacToe by Peter Szepesi")
+        self.restart_button.clicked.connect(self.restart)
         #self.create_buttons()
         self.setStyleSheet("""
             QLabel{
@@ -113,6 +123,11 @@ class AppWindow(QMainWindow):
                 background-color: rgb(230, 230, 255);
             }
             
+            QPushButton#restartButton{
+                font-family: Bahnschrift;
+                font-size: 23px;
+            }
+            
         """)
 
     def center_window(self):
@@ -129,6 +144,7 @@ class AppWindow(QMainWindow):
                 button = QPushButton()
                 button.setFixedSize(self.button_size, self.button_size)
                 button.clicked.connect(self.on_button_clicked)
+                button.setStyle(QStyleFactory.create("Fusion"))
                 row.append(button)
             self.buttons.append(row)
 
@@ -160,8 +176,22 @@ class AppWindow(QMainWindow):
             self.player_2_label.setText(f"    {self.player_2_name}")
 
         winner = self.check_win()
+        # If the winner is known
         if winner != "N":
-            print(f"The winner is : {winner}")
+            letter = sender.text()
+            # Displaying who won
+            if letter == "X":
+                self.status_label.setStyleSheet("color: red;")
+                self.status_label.setText(f"{self.player_1_name} won!")
+            else:
+                self.status_label.setStyleSheet("color: blue;")
+                self.status_label.setText(f"{self.player_2_name} won!")
+            self.h_box_status.addWidget(self.restart_button, alignment=Qt.AlignCenter)
+
+            # Disable the buttons
+            for i in range(0, len(self.buttons)):
+                for j in range(0, len(self.buttons[i])):
+                    self.buttons[i][j].setEnabled(False)
 
     def check_win(self):
         winner = ""
@@ -174,7 +204,6 @@ class AppWindow(QMainWindow):
                 elif self.buttons[i][j].text() == "O":
                     winner = self.check_directions_win(i, j, "O")
                     if winner != "N": return "O"
-
         return "N"
 
     def check_directions_win(self, row, column, letter):
@@ -395,10 +424,7 @@ class AppWindow(QMainWindow):
                         self.buttons[i][j].setStyleSheet("background-color: blue;")
                     i -= 1
                     j -= 1
-            # Disable the buttons
-            for i in range(0, len(self.buttons)):
-                for j in range(0, len(self.buttons[i])):
-                    self.buttons[i][j].setEnabled(False)
+
             return True
         else: return False
 
@@ -413,10 +439,28 @@ class AppWindow(QMainWindow):
         sys.exit(0)
 
     def restart(self):
-        print("Restarting")
+        self.active_player_1 = True
+        self.player_1_label.setText(f"🟡{self.player_1_name}")
+        self.player_2_label.setText(f"    {self.player_2_name}")
+        self.h_box_status.removeWidget(self.restart_button)
+        self.restart_button.setParent(None)
+        self.status_label.setText("")
+        for i in range(0, len(self.buttons)):
+            for j in range(0, len(self.buttons[i])):
+                self.buttons[i][j].setEnabled(True)
+                self.buttons[i][j].setText("")
+                self.buttons[i][j].setStyle(QStyleFactory.create("Fusion"))
+                self.buttons[i][j].setStyleSheet("")
 
     def new_game(self):
-        print("New game")
+        self.active_player_1 = True
+        self.player_1_label.setText(f"🟡{self.player_1_name}")
+        self.player_2_label.setText(f"    {self.player_2_name}")
+        self.h_box_status.removeWidget(self.restart_button)
+        self.restart_button.setParent(None)
+        self.status_label.setText("")
+        self.buttons: List[List[QPushButton]] = []
+        self.Main.welcome_w.show()
 
     def open_help(self):
         print("Opening help")

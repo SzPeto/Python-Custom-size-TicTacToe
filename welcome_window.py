@@ -141,5 +141,8 @@ class WelcomeWindow(QWidget):
         painter = QPainter(self)
         painter.drawImage(self.rect(), self.background_image)  # self.rect() tells to draw an image of a
                                                                # rectangle with size of self
-        opacity = QColor(0, 0, 0, 20) # Alpha 0-255, 100 = 40% opacity
+        opacity = QColor(0, 0, 0, 30) # Alpha 0-255, 100 = 40% opacity
         painter.fillRect(self.rect(), opacity)
+
+    def closeEvent(self, event): # In case of x button
+        sys.exit(0)
