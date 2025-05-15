@@ -1,4 +1,8 @@
+import os
+import sys
+
 from PyQt5.QtCore import Qt
+from PyQt5.QtGui import QImage, QPainter, QColor
 from PyQt5.QtWidgets import QWidget, QLineEdit, QVBoxLayout, QHBoxLayout, QPushButton, QLabel, QComboBox
 
 
@@ -25,6 +29,7 @@ class WelcomeWindow(QWidget):
         self.h_box_options_2 = QHBoxLayout()
 
         # Labels, lineedit, buttons and other
+        self.background_image = QImage(self.resource_path("background - welcome_window.jpg"))
         self.name_1_text_field = QLineEdit()
         self.name_2_text_field = QLineEdit()
         self.title_label = QLabel("Custom size TicTacToe\n by Peter Szepesi")
@@ -59,6 +64,8 @@ class WelcomeWindow(QWidget):
         self.start_button.clicked.connect(self.start)
 
         # Labels, buttons and other
+        self.grid_size_label.setObjectName("gridSizeLabel")
+        self.in_a_row_label.setObjectName("inARowLabel")
         self.setWindowIcon(self.app_window.icon)
         self.title_label.setObjectName("titleLabel")
         self.setWindowTitle("Welcome to custom size TicTacToe")
@@ -76,8 +83,16 @@ class WelcomeWindow(QWidget):
             
             QLabel#titleLabel{
                 font-size: 35px;
-                color: rgb(0, 225, 0);
+                color: rgb(0, 0, 0);
                 font-style: italic;
+            }
+            
+            QLabel#gridSizeLabel{
+                background-color: rgba(255, 255, 255, 200);
+            }
+            
+            QLabel#inARowLabel{
+                background-color: rgba(255, 255, 255, 200);
             }
             
             QComboBox{
@@ -94,9 +109,6 @@ class WelcomeWindow(QWidget):
                 font-size: 25px;
             }
             
-            WelcomeWindow{
-                background-color: rgb(230, 230, 255);
-            }
         """)
 
     def center_window(self):
@@ -118,3 +130,16 @@ class WelcomeWindow(QWidget):
         self.app_window.game_info_label.setText(f"{self.app_window.in_a_row} in a row")
         self.app_window.create_buttons()
         self.hide()
+
+    def resource_path(self, relative_path):
+        if hasattr(sys, "_MEIPASS"):
+            return os.path.join(sys._MEIPASS, relative_path) # In case of exe return the absolute path
+        else:
+            return os.path.join(os.path.abspath("."), relative_path) # In case of IDE return the relative path
+
+    def paintEvent(self, event):
+        painter = QPainter(self)
+        painter.drawImage(self.rect(), self.background_image)  # self.rect() tells to draw an image of a
+                                                               # rectangle with size of self
+        opacity = QColor(0, 0, 0, 20) # Alpha 0-255, 100 = 40% opacity
+        painter.fillRect(self.rect(), opacity)

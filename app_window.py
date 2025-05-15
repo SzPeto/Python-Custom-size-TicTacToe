@@ -39,7 +39,7 @@ class AppWindow(QMainWindow):
         # Layout
         self.central_widget = QWidget()
         self.h_box_info = QHBoxLayout()
-        self.grid_h_box = QHBoxLayout()
+        self.h_box_grid = QHBoxLayout()
         self.v_box = QVBoxLayout()
         self.grid_layout = QGridLayout()
 
@@ -57,14 +57,14 @@ class AppWindow(QMainWindow):
 
         # Layout
         self.setCentralWidget(self.central_widget)
-        self.grid_h_box.addStretch() # This adds a stretch to the left side of the grid
-        self.grid_h_box.addLayout(self.grid_layout) # The grid between two stretches
-        self.grid_h_box.addStretch() # This adds a stretch to the right side of the grid
+        self.h_box_grid.addStretch() # This adds a stretch to the left side of the grid
+        self.h_box_grid.addLayout(self.grid_layout) # The grid between two stretches
+        self.h_box_grid.addStretch() # This adds a stretch to the right side of the grid
         self.h_box_info.addWidget(self.player_1_label, alignment=Qt.AlignCenter)
         self.h_box_info.addWidget(self.game_info_label, alignment=Qt.AlignCenter)
         self.h_box_info.addWidget(self.player_2_label, alignment=Qt.AlignCenter)
         self.v_box.addLayout(self.h_box_info)
-        self.v_box.addLayout(self.grid_h_box)
+        self.v_box.addLayout(self.h_box_grid)
         self.central_widget.setLayout(self.v_box)
 
         # Menu
@@ -145,14 +145,16 @@ class AppWindow(QMainWindow):
         if self.active_player_1:
             sender.setStyleSheet("color: red; font-size: 20px; font-weight: bold;")
             sender.setText("X")
-            sender.clicked.disconnect()
+            #sender.clicked.disconnect()
+            sender.setEnabled(False)
             self.active_player_1 = False
             self.player_2_label.setText(f"🟡{self.player_2_name}")
             self.player_1_label.setText(f"    {self.player_1_name}")
         else:
             sender.setStyleSheet("color: blue; font-size: 20px; font-weight: bold;")
             sender.setText("O")
-            sender.clicked.disconnect()
+            #sender.clicked.disconnect()
+            sender.setEnabled(False)
             self.active_player_1 = True
             self.player_1_label.setText(f"🟡{self.player_1_name}")
             self.player_2_label.setText(f"    {self.player_2_name}")
