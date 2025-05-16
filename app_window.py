@@ -7,7 +7,7 @@ from typing import List
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QGuiApplication, QIcon
 from PyQt5.QtWidgets import QMainWindow, QWidget, QGridLayout, QPushButton, QHBoxLayout, QVBoxLayout, QLabel, QMenu, \
-    QMenuBar, QAction, QStyleFactory
+    QMenuBar, QAction, QStyleFactory, QFrame
 
 
 class AppWindow(QMainWindow):
@@ -51,6 +51,8 @@ class AppWindow(QMainWindow):
         self.h_box_status = QHBoxLayout()
         self.v_box = QVBoxLayout()
         self.grid_layout = QGridLayout()
+        self.separator = QFrame()
+        self.separator_2 = QFrame()
 
         # Buttons, labels and other
         self.buttons: List[List[QPushButton]] = []
@@ -76,6 +78,12 @@ class AppWindow(QMainWindow):
         self.h_box_grid.addStretch() # This adds a stretch to the left side of the grid
         self.h_box_grid.addLayout(self.grid_layout) # The grid between two stretches
         self.h_box_grid.addStretch() # This adds a stretch to the right side of the grid
+        self.separator.setFrameShape(QFrame.HLine)
+        self.separator.setFrameShadow(QFrame.Sunken)
+        self.separator.setLineWidth(2)
+        self.separator_2.setFrameShape(QFrame.HLine)
+        self.separator_2.setFrameShadow(QFrame.Sunken)
+        self.separator_2.setLineWidth(2)
         self.h_box_info.addWidget(self.player_1_label, alignment=Qt.AlignCenter)
         self.h_box_info.addWidget(self.game_info_label, alignment=Qt.AlignCenter)
         self.h_box_info.addWidget(self.player_2_label, alignment=Qt.AlignCenter)
@@ -85,7 +93,9 @@ class AppWindow(QMainWindow):
         self.h_box_score.addWidget(self.player_2_score_label, alignment = Qt.AlignRight)
         self.h_box_spacer.addWidget(self.spacer_label)
         self.v_box.addLayout(self.h_box_info)
+        self.v_box.addWidget(self.separator)
         self.v_box.addLayout(self.h_box_score)
+        self.v_box.addWidget(self.separator_2)
         self.v_box.addLayout(self.h_box_spacer)
         self.v_box.addLayout(self.h_box_grid)
         self.v_box.addLayout(self.h_box_status)
