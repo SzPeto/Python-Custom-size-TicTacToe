@@ -24,6 +24,8 @@ class AppWindow(QMainWindow):
         self.player_1_name = "Player 1"
         self.player_2_name = "Player 2"
         self.count = 0
+        self.player_1_score = 0
+        self.player_2_score = 0
 
         # Menu
         self.menu_bar = QMenuBar()
@@ -43,6 +45,8 @@ class AppWindow(QMainWindow):
         # Layout
         self.central_widget = QWidget()
         self.h_box_info = QHBoxLayout()
+        self.h_box_score = QHBoxLayout()
+        self.h_box_spacer = QHBoxLayout()
         self.h_box_grid = QHBoxLayout()
         self.h_box_status = QHBoxLayout()
         self.v_box = QVBoxLayout()
@@ -50,12 +54,17 @@ class AppWindow(QMainWindow):
 
         # Buttons, labels and other
         self.buttons: List[List[QPushButton]] = []
-        self.restart_button = QPushButton("Restart")
+        self.restart_button = QPushButton("Play again")
         self.player_1_label = QLabel(f"🟡{self.player_1_name}")
         self.player_2_label = QLabel(f"    {self.player_2_name}")
+        self.player_1_score_label = QLabel(f"        {self.player_1_score}")
+        self.score_label = QLabel("Score")
+        self.player_2_score_label = QLabel(f"{self.player_2_score}        ")
+        self.player_2_score_label.setTextFormat(Qt.PlainText)
         self.game_info_label = QLabel(f"{self.in_a_row} in a row")
         self.status_label = QLabel("")
         self.icon = QIcon(self.resource_path("tic_tac_toe.png"))
+        self.spacer_label = QLabel("")
 
         # Initializing UI
         self.initUI()
@@ -71,7 +80,13 @@ class AppWindow(QMainWindow):
         self.h_box_info.addWidget(self.game_info_label, alignment=Qt.AlignCenter)
         self.h_box_info.addWidget(self.player_2_label, alignment=Qt.AlignCenter)
         self.h_box_status.addWidget(self.status_label, alignment = Qt.AlignCenter)
+        self.h_box_score.addWidget(self.player_1_score_label, alignment = Qt.AlignLeft)
+        self.h_box_score.addWidget(self.score_label, alignment = Qt.AlignCenter)
+        self.h_box_score.addWidget(self.player_2_score_label, alignment = Qt.AlignRight)
+        self.h_box_spacer.addWidget(self.spacer_label)
         self.v_box.addLayout(self.h_box_info)
+        self.v_box.addLayout(self.h_box_score)
+        self.v_box.addLayout(self.h_box_spacer)
         self.v_box.addLayout(self.h_box_grid)
         self.v_box.addLayout(self.h_box_status)
         self.central_widget.setLayout(self.v_box)
@@ -105,8 +120,10 @@ class AppWindow(QMainWindow):
         self.player_1_label.setObjectName("player1Label")
         self.player_2_label.setObjectName("player2Label")
         self.setWindowTitle("Custom size TicTacToe by Peter Szepesi v0.8")
-        self.restart_button.clicked.connect(self.restart)
-        #self.create_buttons()
+        self.restart_button.clicked.connect(self.play_again)
+        self.player_1_score_label.setObjectName("player1ScoreLabel")
+        self.score_label.setObjectName("scoreLabel")
+        self.player_2_score_label.setObjectName("player2ScoreLabel")
         self.setStyleSheet("""
             QLabel{
                 font-family: Bahnschrift;
@@ -119,6 +136,18 @@ class AppWindow(QMainWindow):
 
             QLabel#player2Label{
                 color: blue;
+            }
+            
+            QLabel#player1ScoreLabel{
+                color: red;
+            }
+            
+            QLabel#player2ScoreLabel{
+                color: blue;
+            }
+            
+            QLabel#scoreLabel{
+                color: green;
             }
             
             AppWindow{
@@ -163,7 +192,6 @@ class AppWindow(QMainWindow):
         if self.active_player_1:
             sender.setStyleSheet("color: red; font-size: 20px; font-weight: bold;")
             sender.setText("X")
-            #sender.clicked.disconnect()
             sender.setEnabled(False)
             self.active_player_1 = False
             self.player_2_label.setText(f"🟡{self.player_2_name}")
@@ -171,7 +199,6 @@ class AppWindow(QMainWindow):
         else:
             sender.setStyleSheet("color: blue; font-size: 20px; font-weight: bold;")
             sender.setText("O")
-            #sender.clicked.disconnect()
             sender.setEnabled(False)
             self.active_player_1 = True
             self.player_1_label.setText(f"🟡{self.player_1_name}")
@@ -185,9 +212,13 @@ class AppWindow(QMainWindow):
             if letter == "X":
                 self.status_label.setStyleSheet("color: red;")
                 self.status_label.setText(f"{self.player_1_name} won!")
+                self.player_1_score += 1
+                self.player_1_score_label.setText(f"        {self.player_1_score}")
             else:
                 self.status_label.setStyleSheet("color: blue;")
                 self.status_label.setText(f"{self.player_2_name} won!")
+                self.player_2_score += 1
+                self.player_2_score_label.setText(f"{self.player_2_score}        ")
             self.h_box_status.addWidget(self.restart_button, alignment=Qt.AlignCenter)
 
             # Disable the buttons
@@ -440,6 +471,20 @@ class AppWindow(QMainWindow):
     def exit(self):
         sys.exit(0)
 
+    def play_again(self):
+        self.active_player_1 = True
+        self.player_1_label.setText(f"🟡{self.player_1_name}")
+        self.player_2_label.setText(f"    {self.player_2_name}")
+        self.h_box_status.removeWidget(self.restart_button)
+        self.restart_button.setParent(None)
+        self.status_label.setText("")
+        for i in range(0, len(self.buttons)):
+            for j in range(0, len(self.buttons[i])):
+                self.buttons[i][j].setEnabled(True)
+                self.buttons[i][j].setText("")
+                self.buttons[i][j].setStyle(QStyleFactory.create("Fusion"))
+                self.buttons[i][j].setStyleSheet("")
+
     def restart(self):
         self.active_player_1 = True
         self.player_1_label.setText(f"🟡{self.player_1_name}")
@@ -447,6 +492,10 @@ class AppWindow(QMainWindow):
         self.h_box_status.removeWidget(self.restart_button)
         self.restart_button.setParent(None)
         self.status_label.setText("")
+        self.player_1_score = 0
+        self.player_2_score = 0
+        self.player_1_score_label.setText(f"        {self.player_1_score}")
+        self.player_2_score_label.setText(f"{self.player_2_score}        ")
         for i in range(0, len(self.buttons)):
             for j in range(0, len(self.buttons[i])):
                 self.buttons[i][j].setEnabled(True)
@@ -462,12 +511,16 @@ class AppWindow(QMainWindow):
         self.restart_button.setParent(None)
         self.status_label.setText("")
         self.buttons: List[List[QPushButton]] = []
+        self.player_1_score = 0
+        self.player_2_score = 0
+        self.player_1_score_label.setText(f"        {self.player_1_score}")
+        self.player_2_score_label.setText(f"{self.player_2_score}        ")
         self.hide()
         self.Main.welcome_w.show()
 
     # File opening methods ***********************************************************************************
     def open_help(self):
-        help_file_path = "Help.txt"
+        help_file_path = self.resource_path("Help.txt")
 
         try:
             if platform.system() == "Windows":
@@ -488,7 +541,7 @@ class AppWindow(QMainWindow):
             print(f"Something went wrong, error message : {e}")
 
     def open_about(self):
-        about_file_path = "About.txt"
+        about_file_path = self.resource_path("About.txt")
 
         try:
             if platform.system() == "Windows":
