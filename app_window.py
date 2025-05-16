@@ -54,7 +54,7 @@ class AppWindow(QMainWindow):
 
         # Buttons, labels and other
         self.buttons: List[List[QPushButton]] = []
-        self.restart_button = QPushButton("Play again")
+        self.restart_button = QPushButton("Play next round")
         self.player_1_label = QLabel(f"🟡{self.player_1_name}")
         self.player_2_label = QLabel(f"    {self.player_2_name}")
         self.player_1_score_label = QLabel(f"        {self.player_1_score}")
