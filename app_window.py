@@ -104,7 +104,7 @@ class AppWindow(QMainWindow):
         self.restart_button.setStyle(QStyleFactory.create("Fusion"))
         self.player_1_label.setObjectName("player1Label")
         self.player_2_label.setObjectName("player2Label")
-        self.setWindowTitle("Custom size TicTacToe by Peter Szepesi")
+        self.setWindowTitle("Custom size TicTacToe by Peter Szepesi v0.8")
         self.restart_button.clicked.connect(self.restart)
         #self.create_buttons()
         self.setStyleSheet("""
@@ -462,6 +462,7 @@ class AppWindow(QMainWindow):
         self.restart_button.setParent(None)
         self.status_label.setText("")
         self.buttons: List[List[QPushButton]] = []
+        self.hide()
         self.Main.welcome_w.show()
 
     # File opening methods ***********************************************************************************

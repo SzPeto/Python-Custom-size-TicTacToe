@@ -130,6 +130,7 @@ class WelcomeWindow(QWidget):
         self.app_window.game_info_label.setText(f"{self.app_window.in_a_row} in a row")
         self.app_window.create_buttons()
         self.hide()
+        self.app_window.show()
 
     def resource_path(self, relative_path):
         if hasattr(sys, "_MEIPASS"):

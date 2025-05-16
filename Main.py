@@ -10,7 +10,6 @@ class Main:
         from welcome_window import WelcomeWindow
         self.app = QApplication(sys.argv)
         self.window = AppWindow(self)
-        self.window.show()
         # Welcome window
         self.welcome_w = WelcomeWindow(self.window)
         self.welcome_w.show()
