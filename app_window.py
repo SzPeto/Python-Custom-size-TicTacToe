@@ -2,6 +2,7 @@ import os
 import platform
 import subprocess
 import sys
+import webbrowser
 from typing import List
 
 from PyQt5.QtCore import Qt
@@ -50,6 +51,7 @@ class AppWindow(QMainWindow):
         self.h_box_spacer = QHBoxLayout()
         self.h_box_grid = QHBoxLayout()
         self.h_box_status = QHBoxLayout()
+        self.h_box_support = QHBoxLayout()
         self.v_box = QVBoxLayout()
         self.grid_layout = QGridLayout()
         self.separator = QFrame()
@@ -68,6 +70,7 @@ class AppWindow(QMainWindow):
         self.status_label = QLabel("")
         self.icon = QIcon(self.resource_path("tic_tac_toe.png"))
         self.spacer_label = QLabel("")
+        self.support_me_button = QPushButton("Support me")
 
         # Initializing UI
         self.initUI()
@@ -93,6 +96,7 @@ class AppWindow(QMainWindow):
         self.h_box_score.addWidget(self.score_label, alignment = Qt.AlignCenter)
         self.h_box_score.addWidget(self.player_2_score_label, alignment = Qt.AlignRight)
         self.h_box_spacer.addWidget(self.spacer_label)
+        self.h_box_support.addWidget(self.support_me_button, alignment = Qt.AlignCenter)
         self.v_box.addLayout(self.h_box_info)
         self.v_box.addWidget(self.separator)
         self.v_box.addLayout(self.h_box_score)
@@ -100,6 +104,7 @@ class AppWindow(QMainWindow):
         self.v_box.addLayout(self.h_box_spacer)
         self.v_box.addLayout(self.h_box_grid)
         self.v_box.addLayout(self.h_box_status)
+        self.v_box.addLayout(self.h_box_support)
         self.central_widget.setLayout(self.v_box)
 
         # Menu
@@ -135,6 +140,8 @@ class AppWindow(QMainWindow):
         self.player_1_score_label.setObjectName("player1ScoreLabel")
         self.score_label.setObjectName("scoreLabel")
         self.player_2_score_label.setObjectName("player2ScoreLabel")
+        self.support_me_button.clicked.connect(self.support_me)
+        self.support_me_button.setObjectName("supportMeButton")
         self.setStyleSheet("""
             QLabel{
                 font-family: Bahnschrift;
@@ -168,6 +175,11 @@ class AppWindow(QMainWindow):
             QPushButton#restartButton{
                 font-family: Bahnschrift;
                 font-size: 23px;
+            }
+            
+            QPushButton#supportMeButton{
+                font-family: Bahnschrift;
+                font-size: 20px;
             }
             
         """)
@@ -580,3 +592,6 @@ class AppWindow(QMainWindow):
             if widget is not None:
                 widget.setParent(None)  # remove from layout
                 widget.deleteLater()  # safe cleanup
+
+    def support_me(self):
+        webbrowser.open("https://www.paypal.me/szpeto")
