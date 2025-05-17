@@ -200,14 +200,14 @@ class AppWindow(QMainWindow):
         sender: QPushButton
         sender = self.sender()
         if self.active_player_1:
-            sender.setStyleSheet("color: red; font-family: lucida handwriting; font-size: 25px; font-weight: bold;")
+            sender.setStyleSheet("color: red; font-family: arial rounded MT; font-size: 23px; font-weight: bold;")
             sender.setText("X")
             sender.setEnabled(False)
             self.active_player_1 = False
             self.player_2_label.setText(f"🟡{self.player_2_name}")
             self.player_1_label.setText(f"    {self.player_1_name}")
         else:
-            sender.setStyleSheet("color: blue; font-family: lucida handwriting; font-size: 25px; font-weight: bold;")
+            sender.setStyleSheet("color: blue; font-family: arial rounded MT; font-size: 23px; font-weight: bold;")
             sender.setText("O")
             sender.setEnabled(False)
             self.active_player_1 = True
