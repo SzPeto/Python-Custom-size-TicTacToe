@@ -26,6 +26,7 @@ class AppWindow(QMainWindow):
         self.count = 0
         self.player_1_score = 0
         self.player_2_score = 0
+        self.symbol_size = 23
 
         # Menu
         self.menu_bar = QMenuBar()
@@ -129,7 +130,7 @@ class AppWindow(QMainWindow):
         self.restart_button.setStyle(QStyleFactory.create("Fusion"))
         self.player_1_label.setObjectName("player1Label")
         self.player_2_label.setObjectName("player2Label")
-        self.setWindowTitle("Custom size TicTacToe by Peter Szepesi v0.8")
+        self.setWindowTitle("Custom size TicTacToe by Peter Szepesi v0.9")
         self.restart_button.clicked.connect(self.play_again)
         self.player_1_score_label.setObjectName("player1ScoreLabel")
         self.score_label.setObjectName("scoreLabel")
@@ -185,7 +186,7 @@ class AppWindow(QMainWindow):
                 button = QPushButton()
                 button.setFixedSize(self.button_size, self.button_size)
                 button.clicked.connect(self.on_button_clicked)
-                button.setStyle(QStyleFactory.create("Fusion"))
+                button.setStyle(QStyleFactory.create("Fusion")) # The style of buttons
                 row.append(button)
             self.buttons.append(row)
 
@@ -200,14 +201,14 @@ class AppWindow(QMainWindow):
         sender: QPushButton
         sender = self.sender()
         if self.active_player_1:
-            sender.setStyleSheet("color: red; font-family: arial rounded MT; font-size: 23px; font-weight: bold;")
+            sender.setStyleSheet(f"color: red; font-family: arial rounded MT; font-size: {self.symbol_size}px; font-weight: bold;")
             sender.setText("X")
             sender.setEnabled(False)
             self.active_player_1 = False
             self.player_2_label.setText(f"🟡{self.player_2_name}")
             self.player_1_label.setText(f"    {self.player_1_name}")
         else:
-            sender.setStyleSheet("color: blue; font-family: arial rounded MT; font-size: 23px; font-weight: bold;")
+            sender.setStyleSheet(f"color: blue; font-family: arial rounded MT; font-size: {self.symbol_size}px; font-weight: bold;")
             sender.setText("O")
             sender.setEnabled(False)
             self.active_player_1 = True
@@ -520,6 +521,7 @@ class AppWindow(QMainWindow):
         self.h_box_status.removeWidget(self.restart_button)
         self.restart_button.setParent(None)
         self.status_label.setText("")
+        self.clear_layout(self.grid_layout)
         self.buttons: List[List[QPushButton]] = []
         self.player_1_score = 0
         self.player_2_score = 0
@@ -570,3 +572,11 @@ class AppWindow(QMainWindow):
             print("You don't have permission to open this file")
         except Exception as e:
             print(f"Something went wrong, error message : {e}")
+
+    def clear_layout(self, layout):
+        while layout.count() != 0: # While there are items in the layout, every itesm counts, even spacers
+            item = layout.takeAt(0) # It returns any item in the layout at index 0
+            widget = item.widget() # If the item is a widget, returns it, if not returns None, clears only widgets
+            if widget is not None:
+                widget.setParent(None)  # remove from layout
+                widget.deleteLater()  # safe cleanup

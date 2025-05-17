@@ -27,6 +27,8 @@ class WelcomeWindow(QWidget):
         self.h_box_player_name = QHBoxLayout()
         self.h_box_options_1 = QHBoxLayout()
         self.h_box_options_2 = QHBoxLayout()
+        self.h_box_options_3 = QHBoxLayout()
+        self.h_box_options_4 = QHBoxLayout()
 
         # Labels, lineedit, buttons and other
         self.background_image = QImage(self.resource_path("background - welcome_window.jpg"))
@@ -35,8 +37,12 @@ class WelcomeWindow(QWidget):
         self.title_label = QLabel("Custom size TicTacToe\n by Peter Szepesi")
         self.grid_size_label = QLabel("Grid size : ")
         self.in_a_row_label = QLabel("In a row : ")
+        self.symbol_size_label = QLabel("O and X symbol size : ")
+        self.button_size_label = QLabel("Size of a sqaure : ")
         self.grid_size_combo = QComboBox()
         self.in_a_row_combo = QComboBox()
+        self.symbol_size_combo = QComboBox()
+        self.button_size_combo = QComboBox()
         self.start_button = QPushButton("Start")
 
         self.initUI()
@@ -50,10 +56,16 @@ class WelcomeWindow(QWidget):
         self.h_box_options_1.addWidget(self.grid_size_combo)
         self.h_box_options_2.addWidget(self.in_a_row_label)
         self.h_box_options_2.addWidget(self.in_a_row_combo)
+        self.h_box_options_3.addWidget(self.symbol_size_label)
+        self.h_box_options_3.addWidget(self.symbol_size_combo)
+        self.h_box_options_4.addWidget(self.button_size_label)
+        self.h_box_options_4.addWidget(self.button_size_combo)
         self.v_box_main.addWidget(self.title_label, alignment = Qt.AlignCenter | Qt.AlignTop)
         self.v_box_main.addLayout(self.h_box_player_name)
         self.v_box_main.addLayout(self.h_box_options_1)
         self.v_box_main.addLayout(self.h_box_options_2)
+        self.v_box_main.addLayout(self.h_box_options_3)
+        self.v_box_main.addLayout(self.h_box_options_4)
         self.v_box_main.addWidget(self.start_button, alignment = Qt.AlignCenter)
         self.setLayout(self.v_box_main)
 
@@ -66,13 +78,21 @@ class WelcomeWindow(QWidget):
         # Labels, buttons and other
         self.grid_size_label.setObjectName("gridSizeLabel")
         self.in_a_row_label.setObjectName("inARowLabel")
+        self.symbol_size_label.setObjectName("symbolSizeLabel")
+        self.button_size_label.setObjectName("buttonSizeLabel")
         self.setWindowIcon(self.app_window.icon)
         self.title_label.setObjectName("titleLabel")
         self.setWindowTitle("Welcome to custom size TicTacToe")
         self.name_1_text_field.setPlaceholderText("Player 1 name : ")
         self.name_2_text_field.setPlaceholderText("Player 2 name : ")
         self.grid_size_combo.addItems(["8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20"])
+        self.grid_size_combo.setCurrentText("12")
         self.in_a_row_combo.addItems(["3", "4", "5", "6", "7", "8"])
+        self.in_a_row_combo.setCurrentText("5")
+        self.symbol_size_combo.addItems(["18", "19", "20", "21", "22", "23", "24", "25"])
+        self.symbol_size_combo.setCurrentText("23")
+        self.button_size_combo.addItems(["34", "35", "36", "37", "38", "39", "40", "41", "42"])
+        self.button_size_combo.setCurrentText("40")
 
         # QSS styling
         self.setStyleSheet("""
@@ -92,6 +112,14 @@ class WelcomeWindow(QWidget):
             }
             
             QLabel#inARowLabel{
+                background-color: rgba(255, 255, 255, 200);
+            }
+            
+            QLabel#symbolSizeLabel{
+                background-color: rgba(255, 255, 255, 200);
+            }
+            
+            QLabel#buttonSizeLabel{
                 background-color: rgba(255, 255, 255, 200);
             }
             
@@ -124,6 +152,8 @@ class WelcomeWindow(QWidget):
             self.app_window.player_2_name = "Player 2"
         self.app_window.grid_size = int(self.grid_size_combo.currentText())
         self.app_window.in_a_row = int(self.in_a_row_combo.currentText())
+        self.app_window.button_size = int(self.button_size_combo.currentText())
+        self.app_window.symbol_size = int(self.symbol_size_combo.currentText())
 
         self.app_window.player_1_label.setText(f"🟡{self.app_window.player_1_name}")
         self.app_window.player_2_label.setText(f"    {self.app_window.player_2_name}")
