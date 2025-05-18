@@ -1,6 +1,7 @@
 import os
 import sys
 
+import requests
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QImage, QPainter, QColor
 from PyQt5.QtWidgets import QWidget, QLineEdit, QVBoxLayout, QHBoxLayout, QPushButton, QLabel, QComboBox
@@ -143,6 +144,7 @@ class WelcomeWindow(QWidget):
         self.setGeometry(self.window_x, self.window_y, self.window_width, self.window_height)
 
     def start(self):
+        self.app_window.button_click_counter("start")
         self.app_window.player_1_name = self.name_1_text_field.text()
         self.app_window.player_2_name = self.name_2_text_field.text()
         # If the name fields are empty

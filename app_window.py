@@ -5,6 +5,7 @@ import sys
 import webbrowser
 from typing import List
 
+import requests
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QGuiApplication, QIcon
 from PyQt5.QtWidgets import QMainWindow, QWidget, QGridLayout, QPushButton, QHBoxLayout, QVBoxLayout, QLabel, QMenu, \
@@ -56,6 +57,7 @@ class AppWindow(QMainWindow):
         self.grid_layout = QGridLayout()
         self.separator = QFrame()
         self.separator_2 = QFrame()
+        self.separator_3 = QFrame()
 
         # Buttons, labels and other
         self.buttons: List[List[QPushButton]] = []
@@ -88,6 +90,9 @@ class AppWindow(QMainWindow):
         self.separator_2.setFrameShape(QFrame.HLine)
         self.separator_2.setFrameShadow(QFrame.Sunken)
         self.separator_2.setLineWidth(2)
+        self.separator_3.setFrameShape(QFrame.HLine)
+        self.separator_3.setFrameShadow(QFrame.Sunken)
+        self.separator_3.setLineWidth(2)
         self.h_box_info.addWidget(self.player_1_label, alignment=Qt.AlignCenter)
         self.h_box_info.addWidget(self.game_info_label, alignment=Qt.AlignCenter)
         self.h_box_info.addWidget(self.player_2_label, alignment=Qt.AlignCenter)
@@ -104,6 +109,7 @@ class AppWindow(QMainWindow):
         self.v_box.addLayout(self.h_box_spacer)
         self.v_box.addLayout(self.h_box_grid)
         self.v_box.addLayout(self.h_box_status)
+        self.v_box.addWidget(self.separator_3)
         self.v_box.addLayout(self.h_box_support)
         self.central_widget.setLayout(self.v_box)
 
@@ -594,4 +600,19 @@ class AppWindow(QMainWindow):
                 widget.deleteLater()  # safe cleanup
 
     def support_me(self):
+        self.button_click_counter("support_me")
         webbrowser.open("https://www.paypal.me/szpeto")
+
+    def button_click_counter(self, button_name):
+        url = f"https://api.counterapi.dev/v1/szpeto_tictactoe_app/{button_name}/up"
+
+        try:
+            response = requests.get(url)
+            response.raise_for_status()
+            if response.status_code == 200:
+                data = response.json()
+                print(f"The {data.get("name")} button clicked count for TicTacToe app is : {data.get("count")}")
+            else:
+                print("Cannot connect to the counter API")
+        except Exception as e:
+            print(f"Error getting the counter request : {e}")
